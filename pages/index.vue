@@ -1,6 +1,7 @@
 <template>
   <div id="page">
   <toolbar-system @clicked="onBackChild"/>
+  {{msg}}
   <v-container v-show="!viewPais" class="col-xl-9">
     <!-- <p v-if="$fetchState.pending">Carregando países...</p>
     <p v-else-if="$fetchState.error">Erro enquanto</p> -->
@@ -104,6 +105,7 @@
               <v-img :class="{ 'on-hover': hover }"
                     :src="item.flag"
                     height="180px"
+                    id="verPaisBtn"
                     @click="[getDataPais(item.alpha2Code)]"
               >
               </v-img>
@@ -209,6 +211,9 @@
     name: 'Home',
     components: {
       ToolbarSystem,
+    },
+    props: {
+      msg: String,
     },
     data: () => ({
       viewPais: false,
@@ -403,6 +408,9 @@
           this.paisesVizinhosPaginated = this.paisesVizinhos
           this.viewPais = true
         })
+      },
+      async data(){
+        console.log('oi')
       },
     },
     created() {

@@ -46,6 +46,7 @@ export default {
     return {
       fixed: false,
       clipped: false,
+      msg: '',
     }
   },
   methods: {
