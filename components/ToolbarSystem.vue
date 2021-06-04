@@ -18,6 +18,7 @@
             color="purple"
             v-show="!$vuetify.breakpoint.xs"
             v-on:click="onClickButton"
+            id="btnVoltar"
     >
       <v-icon dense
               color="purple"

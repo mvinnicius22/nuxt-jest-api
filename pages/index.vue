@@ -1,7 +1,6 @@
 <template>
   <div id="page">
   <toolbar-system @clicked="onBackChild"/>
-  {{msg}}
   <v-container v-show="!viewPais" class="col-xl-9">
     <!-- <p v-if="$fetchState.pending">Carregando países...</p>
     <p v-else-if="$fetchState.error">Erro enquanto</p> -->
@@ -105,8 +104,8 @@
               <v-img :class="{ 'on-hover': hover }"
                     :src="item.flag"
                     height="180px"
-                    id="verPaisBtn"
                     @click="[getDataPais(item.alpha2Code)]"
+                    id="verPaisBtn"
               >
               </v-img>
             </v-card>
@@ -123,11 +122,11 @@
       >
     </v-pagination>
   </v-container>
-  <v-container v-show="viewPais" grid-list-xl class="mt-md-12 col-xl-9">
+  <v-container id="containerVerPais" v-show="viewPais" grid-list-xl class="mt-md-12 col-xl-9">
       <v-layout row wrap>
           <v-flex d-flex xs12 sm6 md5>
             <v-card elevation="0">
-              <v-img :src="pais.flag" height="100%"> </v-img>
+              <v-img :src="pais.flag" height="100%" id="imagem"> </v-img>
             </v-card>
           </v-flex>
           <v-flex d-flex xs12 sm6 md7>
@@ -179,6 +178,7 @@
                         :src="item.flag"
                         height="200px"
                         @click="[getDataPais(item.alpha2Code)]"
+                        id="verPaisBtnVizinho"
                   >
                   </v-img>
                 </v-card>
@@ -213,7 +213,7 @@
       ToolbarSystem,
     },
     props: {
-      msg: String,
+      msg: String
     },
     data: () => ({
       viewPais: false,
@@ -280,7 +280,7 @@
         this.viewPais = value
       },
       async getPaises(){
-        await this.$axios.get('all?fields=name;flag;region;capital;languages;alpha2Code;currencies;population;subregion;borders').then((res) => {
+        await this.$axios.$get('all?fields=name;flag;region;capital;languages;alpha2Code;currencies;population;subregion;borders').then((res) => {
           this.paises = res.data
           this.paisesPaginated = res.data.slice((this.page - 1)* this.perPage, this.page* this.perPage)
         }).finally(() => {
@@ -361,25 +361,25 @@
         this.paisesVizinhosPaginated = this.paisesVizinhos.slice((this.pageVizinho - 1)* this.perPageVizinho, this.pageVizinho* this.perPageVizinho)
       },
       async getPaisesByRegiao(){
-        await this.$axios.get(`region/${this.regionId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`).then((res) => {
+        await this.$axios.$get(`region/${this.regionId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`).then((res) => {
           this.paises = res.data
           this.visiblePages()
         })
       },
       async getPaisesByCapital(){
-        await this.$axios.get(`capital/${this.capitalId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`).then((res) => {
+        await this.$axios.$get(`capital/${this.capitalId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`).then((res) => {
           this.paises = res.data
           this.visiblePages()
         })
       },
       async getPaisesByLanguage(){
-        await this.$axios.get(`lang/${this.linguaId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`).then((res) => {
+        await this.$axios.$get(`lang/${this.linguaId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`).then((res) => {
           this.paises = res.data
           this.visiblePages()
         })
       },
       async getPaisesById(){
-        await this.$axios.get(`alpha/${this.paisId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`).then((res) => {
+        await this.$axios.$get(`alpha/${this.paisId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`).then((res) => {
           this.paises = []
           this.paises.push(res.data)
           this.visiblePages()
@@ -393,11 +393,11 @@
       },
       async getDataPais(alpha){
         this.resetVariaveis()
-        await this.$axios.get(`alpha/${alpha}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`).then((res) => {
+        await this.$axios.$get(`alpha/${alpha}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`).then((res) => {
           this.pais = res.data
           this.pais.population = numeral(this.pais.population).format('0.0a');
           for(var i = 0; i < res.data.borders.length; i++){
-            this.$axios.get(`alpha/${res.data.borders[i]}?fields=alpha2Code;flag`).then((response) => {
+            this.$axios.$get(`alpha/${res.data.borders[i]}?fields=alpha2Code;flag`).then((response) => {
               this.paisesVizinhos.push({
                 alpha2Code: response.data.alpha2Code,
                 flag: response.data.flag
