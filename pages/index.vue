@@ -280,77 +280,99 @@
         this.viewPais = value
       },
       async getPaises(){
-        await this.$axios.$get('all?fields=name;flag;region;capital;languages;alpha2Code;currencies;population;subregion;borders').then((res) => {
-          this.paises = res.data
-          this.paisesPaginated = res.data.slice((this.page - 1)* this.perPage, this.page* this.perPage)
-        }).finally(() => {
+        try {
+          const paises = await this.$axios.$get('all?fields=name;flag;region;capital;languages;alpha2Code;currencies;population;subregion;borders')
+          this.paises = paises
+          this.paisesPaginated = paises.slice((this.page - 1)* this.perPage, this.page* this.perPage)
           this.getRegioes()
           this.getCapitais()
           this.getLinguas()
           this.getPaisesForSelect()
-        })
+        } catch (error) {
+          throw new Error(error)
+        }
       },
       getRegioes(){
-        this.regioes = this.paises.map((pais) => {
-          if(pais){
-            return {
-              id: pais.region,
-              region: pais.region
-            }
-          }
-        })
-      },
-      getCapitais(){
-        this.capitais = this.paises.map((pais) => {
-          if(pais){
-            return {
-              id: pais.capital,
-              capital: pais.capital
-            }
-          }
-        })
-      },
-      getLinguas(){
-        this.linguas = this.paises.map((pais) => {
-          for(var i = 0; i < pais.languages.length; i++){
+        try {
+          this.regioes = this.paises.map((pais) => {
             if(pais){
               return {
-                id: pais.languages[i].iso639_1,
-                lingua: pais.languages[i].nativeName
+                id: pais.region,
+                region: pais.region
               }
             }
-          }
-        })
+          })
+        } catch (error) {
+          throw new Error(error)
+        }
+      },
+      getCapitais(){
+        try {
+          this.capitais = this.paises.map((pais) => {
+            if(pais){
+              return {
+                id: pais.capital,
+                capital: pais.capital
+              }
+            }
+          })
+        } catch (error) {
+          throw new Error(error)
+        }
+      },
+      getLinguas(){
+        try {
+          this.linguas = this.paises.map((pais) => {
+            for(var i = 0; i < pais.languages.length; i++){
+              if(pais){
+                return {
+                  id: pais.languages[i].iso639_1,
+                  lingua: pais.languages[i].nativeName
+                }
+              }
+            }
+          })
+        } catch (error) {
+          throw new Error(error)
+        }
       },
       getPaisesForSelect(){
-        this.paisesSelect = this.paises.map((pais) => {
-          if(pais){
-            return {
-              id: pais.alpha2Code,
-              pais: pais.name
+        try {
+          this.paisesSelect = this.paises.map((pais) => {
+            if(pais){
+              return {
+                id: pais.alpha2Code,
+                pais: pais.name
+              }
             }
-          }
-        })
+          })
+        } catch (error) {
+          throw new Error(error)
+        }
       },
       goFilter(){
-        if(this.option != null){
-          this.loadingPesquisar = true
-          switch (this.option){
-            case 1:     this.getPaisesByRegiao();      break;
-            case 2:     this.getPaisesByCapital();      break;
-            case 3:     this.getPaisesByLanguage();      break;
-            case 4:     this.getPaisesById();       break;
-            case 5:     this.getPaisesByRegiao();      break;
-            default:
-              break
+        try {
+          if(this.option != null){
+            this.loadingPesquisar = true
+            switch (this.option){
+              case 1:     this.getPaisesByRegiao();      break;
+              case 2:     this.getPaisesByCapital();      break;
+              case 3:     this.getPaisesByLanguage();      break;
+              case 4:     this.getPaisesById();       break;
+              case 5:     this.getPaisesByRegiao();      break;
+              default:
+                break
+            }
+            this.resetVariaveis()
+          }else{
+            var inputSelect = document.getElementById("input-select");
+            // inputSelect.classList.add("bounce");
+            setTimeout(function() {
+              // inputSelect.classList.remove("bounce");
+            }, 1000);
           }
-          this.resetVariaveis()
-        }else{
-          var inputSelect = document.getElementById("input-select");
-          inputSelect.classList.add("bounce");
-          setTimeout(function() {
-            inputSelect.classList.remove("bounce");
-          }, 1000);
+        } catch (error) {
+          throw new Error(error)
         }
       },
       visiblePages(){
@@ -361,29 +383,41 @@
         this.paisesVizinhosPaginated = this.paisesVizinhos.slice((this.pageVizinho - 1)* this.perPageVizinho, this.pageVizinho* this.perPageVizinho)
       },
       async getPaisesByRegiao(){
-        await this.$axios.$get(`region/${this.regionId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`).then((res) => {
-          this.paises = res.data
+        try {
+          const paises = await this.$axios.$get(`region/${this.regionId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
+          this.paises = paises
           this.visiblePages()
-        })
+        } catch (error) {
+          throw new Error(error)
+        }
       },
       async getPaisesByCapital(){
-        await this.$axios.$get(`capital/${this.capitalId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`).then((res) => {
-          this.paises = res.data
+        try {
+          const paises = await this.$axios.$get(`capital/${this.capitalId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
+          this.paises = paises
           this.visiblePages()
-        })
+        } catch (error) {
+          throw new Error(error)
+        }
       },
       async getPaisesByLanguage(){
-        await this.$axios.$get(`lang/${this.linguaId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`).then((res) => {
-          this.paises = res.data
+        try {
+          const paises = await this.$axios.$get(`lang/${this.linguaId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
+          this.paises = paises
           this.visiblePages()
-        })
+        } catch (error) {
+          throw new Error(error)
+        }
       },
       async getPaisesById(){
-        await this.$axios.$get(`alpha/${this.paisId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`).then((res) => {
+        try {
           this.paises = []
-          this.paises.push(res.data)
+          const paises = await this.$axios.$get(`alpha/${this.paisId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
+          this.paises.push(paises)
           this.visiblePages()
-        })
+        } catch (error) {
+          throw new Error(error)
+        }
       },
       resetVariaveis(){
         this.paisesVizinhos = []
@@ -392,25 +426,23 @@
         this.pageVizinho = 1
       },
       async getDataPais(alpha){
-        this.resetVariaveis()
-        await this.$axios.$get(`alpha/${alpha}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`).then((res) => {
-          this.pais = res.data
+        try {
+          this.resetVariaveis()
+          const pais = await this.$axios.$get(`alpha/${alpha}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
+          this.pais = pais
           this.pais.population = numeral(this.pais.population).format('0.0a');
-          for(var i = 0; i < res.data.borders.length; i++){
-            this.$axios.$get(`alpha/${res.data.borders[i]}?fields=alpha2Code;flag`).then((response) => {
-              this.paisesVizinhos.push({
-                alpha2Code: response.data.alpha2Code,
-                flag: response.data.flag
-              })
+          for(var i = 0; i < this.pais.borders.length; i++){
+            const paisesVizinhos = await this.$axios.$get(`alpha/${this.pais.borders[i]}?fields=alpha2Code;flag`)
+            this.paisesVizinhos.push({
+              alpha2Code: paisesVizinhos.alpha2Code,
+              flag: paisesVizinhos.flag
             })
           }
-        }).finally(() => {
           this.paisesVizinhosPaginated = this.paisesVizinhos
           this.viewPais = true
-        })
-      },
-      async data(){
-        console.log('oi')
+        } catch (error) {
+          throw new Error(error)
+        }
       },
     },
     created() {
@@ -427,11 +459,11 @@
 }
 .v-card:not(.on-hover) {
   opacity: 1;
- }
+}
 .v-card:hover .on-hover{
-   opacity: 0.7;
-   cursor: pointer;
- }
+  opacity: 0.7;
+  cursor: pointer;
+}
 .linkClickable {
   color: purple;
   text-decoration: underline;

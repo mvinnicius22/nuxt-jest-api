@@ -52,8 +52,8 @@ export default {
   },
   methods: {
     onClickButton () {
-         this.$emit('clicked', false)
-     }
+        this.$emit('clicked', false)
+    }
   }
 }
 </script>
