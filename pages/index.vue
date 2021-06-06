@@ -2,100 +2,9 @@
   <div id="page">
   <toolbar-system @clicked="onBackChild"/>
   <v-container v-show="!viewPais" class="col-xl-9">
+    <CountryFilter @option="onOptionSelect"> </CountryFilter>
     <!-- <p v-if="$fetchState.pending">Carregando países...</p>
     <p v-else-if="$fetchState.error">Erro enquanto</p> -->
-    <v-flex d-flex>
-      <v-layout wrap>
-        <v-flex md4 sm6 xs12 class="pl-6 pr-6">
-          <v-select
-                label="Escolha uma opção"
-                :items="optionsOne"
-                item-text="nome"
-                color="purple"
-                item-color="purple"
-                item-value="id"
-                v-model="selectOne"
-                @change="option = null"
-          >
-          </v-select>
-        </v-flex>
-        <v-flex md4 sm6 xs12 class="pl-6 pr-6">
-          <v-select
-                v-if="selectOne == 1"
-                label="Escolha uma região"
-                :items="filteredRegioes"
-                item-text="region"
-                color="purple"
-                item-color="purple"
-                item-value="id"
-                v-model="regionId"
-                @input="option = 1"
-          >
-          </v-select>
-          <v-autocomplete
-                v-if="selectOne == 2"
-                label="Escolha uma capital"
-                :items="capitais"
-                item-text="capital"
-                color="purple"
-                item-color="purple"
-                item-value="id"
-                v-model="capitalId"
-                @input="option = 2"
-          >
-          </v-autocomplete>
-          <v-autocomplete
-                v-if="selectOne == 3"
-                label="Escolha uma língua"
-                :items="linguas"
-                item-text="lingua"
-                color="purple"
-                item-color="purple"
-                item-value="id"
-                v-model="linguaId"
-                @input="option = 3"
-          >
-          </v-autocomplete>
-          <v-autocomplete
-                v-if="selectOne == 4"
-                label="Escolha um país"
-                :items="paisesSelect"
-                item-text="pais"
-                color="purple"
-                item-color="purple"
-                item-value="id"
-                v-model="paisId"
-                @input="option = 4"
-          >
-          </v-autocomplete>
-          <v-select
-                v-if="selectOne == 5"
-                label="Escolha uma região"
-                :items="filteredRegioes"
-                item-text="region"
-                color="purple"
-                item-color="purple"
-                item-value="id"
-                v-model="regionId"
-                @input="option = 5"
-          >
-          </v-select>
-        </v-flex>
-        <v-flex md4 :class="{'pesquisarRight': $vuetify.breakpoint.xs}" class="pl-6 pr-6 pt-md-4 pt-sm-0 pt-xs-0">
-          <v-btn elevation="2"
-                color="purple"
-                @click="goFilter()"
-                :loading="loadingPesquisar"
-                class="white--text"
-                id="input-select"
-          >
-            <span class="white--text pr-4 pl-4">
-              Pesquisar
-            </span>
-          </v-btn>
-        </v-flex>
-      </v-layout>
-    </v-flex>
     <v-flex d-flex>
       <v-layout wrap>
         <v-flex md4 sm4 class="pl-6 pr-6 pa-4" v-for="item in paisesPaginated" :key="item.id">
@@ -207,6 +116,7 @@
 <script>
   import numeral from 'numeral'
   import ToolbarSystem from '../components/ToolbarSystem'
+  import CountryFilter from '../components/CountryFilter'
   export default {
     name: 'Home',
     components: {
@@ -248,11 +158,9 @@
         }
       ],
       selectOne: null,
-      regioes: [],
       regionId: null,
       capitais: [],
       capitalId: null,
-      linguas: [],
       linguaId: null,
       paisesSelect: [],
       paisId: null,
@@ -270,12 +178,15 @@
         border: null
       },
     }),
-    computed: {
-      filteredRegioes(){
-          return this.regioes.filter(item => item.id != '')
-      }
-    },
     methods: {
+      onOptionSelect (value) {
+        this.option = value.option
+        this.regionId = value.regionId
+        this.capitalId = value.capitalId
+        this.linguaId = value.linguaId
+        this.paisId = value.paisId
+        this.goFilter()
+      },
       onBackChild (value) {
         this.viewPais = value
       },
@@ -284,68 +195,7 @@
           const paises = await this.$axios.$get('all?fields=name;flag;region;capital;languages;alpha2Code;currencies;population;subregion;borders')
           this.paises = paises
           this.paisesPaginated = paises.slice((this.page - 1)* this.perPage, this.page* this.perPage)
-          this.getRegioes()
-          this.getCapitais()
-          this.getLinguas()
-          this.getPaisesForSelect()
-        } catch (error) {
-          throw new Error(error)
-        }
-      },
-      getRegioes(){
-        try {
-          this.regioes = this.paises.map((pais) => {
-            if(pais){
-              return {
-                id: pais.region,
-                region: pais.region
-              }
-            }
-          })
-        } catch (error) {
-          throw new Error(error)
-        }
-      },
-      getCapitais(){
-        try {
-          this.capitais = this.paises.map((pais) => {
-            if(pais){
-              return {
-                id: pais.capital,
-                capital: pais.capital
-              }
-            }
-          })
-        } catch (error) {
-          throw new Error(error)
-        }
-      },
-      getLinguas(){
-        try {
-          this.linguas = this.paises.map((pais) => {
-            for(var i = 0; i < pais.languages.length; i++){
-              if(pais){
-                return {
-                  id: pais.languages[i].iso639_1,
-                  lingua: pais.languages[i].nativeName
-                }
-              }
-            }
-          })
-        } catch (error) {
-          throw new Error(error)
-        }
-      },
-      getPaisesForSelect(){
-        try {
-          this.paisesSelect = this.paises.map((pais) => {
-            if(pais){
-              return {
-                id: pais.alpha2Code,
-                pais: pais.name
-              }
-            }
-          })
+          this.$emit('paisesFilter', this.paises)
         } catch (error) {
           throw new Error(error)
         }
