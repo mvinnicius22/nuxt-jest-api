@@ -3,7 +3,7 @@
 const Mocker = (method, url, data, overwritePath = null) => {
   return new Promise((resolve, reject) => {
     const urlWithoutParams = url ? url.split('?')[0] : '/all'
-    const fileName = 'get.all'
+    const fileName = method.toLowerCase() + urlWithoutParams.toLowerCase().split('/').join('.')
     let responseJson
     if (overwritePath) {
       overwritePath = overwritePath.replace('.spec', '')

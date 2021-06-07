@@ -34,26 +34,27 @@ describe('index.vue', () => {
   it('quantidade de paises', () => {
     expect(wrapper.findAll('#verPaisBtn').exists()).toBe(true)
     wrapper.vm.getPaises()
-    expect(wrapper.vm.paises.length).toBeGreaterThan(100)
+    expect(wrapper.vm.paises.length).toBeGreaterThan(200)
   })
 
   it('verifica se o botão pesquisar só funciona se o usuário preencher os selects', async () => {
     const paises = wrapper.vm.paises.length;
     wrapper.vm.filter.selectOne = 1
     wrapper.vm.filter.option = null
-    wrapper.vm.filter.regionId = 'Asia'
+    wrapper.vm.filter.regionId = 'Americas'
     const btnPesquisar = wrapper.findAll('#input-select')
     await btnPesquisar.at(0).trigger('click')
     expect(wrapper.vm.paises).toHaveLength(paises)
   })
 
   it('verifica selecionar regiao', async () => {
-    const paises = wrapper.vm.paises.length;
+    // const paises = wrapper.vm.paises.length;
     wrapper.vm.filter.selectOne = 1
     wrapper.vm.filter.option = 1
-    wrapper.vm.filter.regionId = 'Asia'
+    wrapper.vm.filter.regionId = 'Americas'
     const btnPesquisar = wrapper.findAll('#input-select')
     await btnPesquisar.at(0).trigger('click')
+    await wrapper.vm.$nextTick()
     expect(wrapper.vm.paises).toBeInstanceOf(Array)
   })
 
@@ -63,8 +64,13 @@ describe('index.vue', () => {
   })
 
   it('verifica se o click nas imagens esta funcionando', async () => {
+    // wrapper.vm.pais.capital = 'Kabul'
     const imagens = wrapper.findAll('#verPaisBtn')
     await imagens.at(0).trigger('click')
+    await wrapper.vm.$nextTick()
+    const cardName = wrapper.find('#card-country')
+    expect(cardName.exists()).toBeTruthy()
+    // expect(cardName.text()).toBe('Capital: Kabul')
   })
 
   it('verifica se o container individual do país está visível quando viewPais = true', async () => {
@@ -75,8 +81,9 @@ describe('index.vue', () => {
 
   it('verifica se os dados do país são preenchidos corretamente', async () => {
     wrapper.vm.viewPais = true;
+
     expect(wrapper.vm.pais).toBeInstanceOf(Object)
-    // expect(wrapper.vm.pais.name).toBeDefined()
+    // expect(wrapper.vm.pais.capital).toBeDefined()
   })
 
   it('verifica se o botão voltar tá funcionando', async () => {

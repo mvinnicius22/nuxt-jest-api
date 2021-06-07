@@ -43,7 +43,7 @@
                       <v-card-subtitle>
                         Nome: {{pais.name}}
                       </v-card-subtitle>
-                      <v-card-subtitle>
+                      <v-card-subtitle id="card-country">
                         Capital: {{pais.capital}}
                       </v-card-subtitle>
                       <v-card-subtitle>
@@ -169,7 +169,7 @@
       },
       async getPaises(){
         try {
-          const paises = await this.$axios.$get('all?fields=name;flag;region;capital;languages;alpha2Code;currencies;population;subregion;borders')
+          const paises = await this.$axios.$get('/all?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders')
           this.paises = paises
           this.paisesPaginated = paises.slice((this.page - 1)* this.perPage, this.page* this.perPage)
           this.$emit('paisesFilter', this.paises)
@@ -211,7 +211,7 @@
       },
       async getPaisesByRegiao(){
         try {
-          const paises = await this.$axios.$get(`region/${this.filter.regionId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
+          const paises = await this.$axios.$get(`/region/${this.filter.regionId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
           this.paises = paises
           this.visiblePages()
         } catch (error) {
@@ -220,7 +220,7 @@
       },
       async getPaisesByCapital(){
         try {
-          const paises = await this.$axios.$get(`capital/${this.filter.capitalId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
+          const paises = await this.$axios.$get(`/capital/${this.filter.capitalId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
           this.paises = paises
           this.visiblePages()
         } catch (error) {
@@ -229,7 +229,7 @@
       },
       async getPaisesByLanguage(){
         try {
-          const paises = await this.$axios.$get(`lang/${this.filter.linguaId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
+          const paises = await this.$axios.$get(`/lang/${this.filter.linguaId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
           this.paises = paises
           this.visiblePages()
         } catch (error) {
@@ -239,7 +239,7 @@
       async getPaisesById(){
         try {
           this.paises = []
-          const paises = await this.$axios.$get(`alpha/${this.filter.paisId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
+          const paises = await this.$axios.$get(`/alpha/${this.filter.paisId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
           this.paises.push(paises)
           this.visiblePages()
         } catch (error) {
@@ -255,7 +255,7 @@
       async getDataPais(alpha){
         try {
           this.resetVariaveis()
-          const pais = await this.$axios.$get(`alpha/${alpha}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
+          const pais = await this.$axios.$get(`/alpha/${alpha}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
           this.pais = pais
           this.pais.population = numeral(this.pais.population).format('0.0a');
           for(var i = 0; i < this.pais.borders.length; i++){

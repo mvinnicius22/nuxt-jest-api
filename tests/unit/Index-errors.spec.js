@@ -2,17 +2,14 @@ import { createLocalVue, mount } from '@vue/test-utils'
 import index from '@/pages/index.vue'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-import Axios from 'axios'
+import $axios from './helpers/api.mock'
 // .jsonOverwritesPath
 
 Vue.use(Vuetify)
 const vuetify = new Vuetify();
 const localVue = createLocalVue();
 
-const $axios = new Axios({
-  baseURL: 'https://restcountries.eu/rest/v2/',
-  timeout: 15000,
-})
+$axios.jsonOverwritesPath = './json/get.all.error.json'
 
 localVue.prototype.$axios = $axios
 

@@ -44,7 +44,7 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseUrl: 'https://restcountries.eu/rest/v2/',
+    baseUrl: 'https://restcountries.eu/rest/v2',
     // browserBaseURL: 'https://restcountries.eu/rest/v2/'
   },
 
