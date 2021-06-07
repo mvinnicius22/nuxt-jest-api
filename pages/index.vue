@@ -2,9 +2,7 @@
   <div id="page">
   <toolbar-system @clicked="onBackChild"/>
   <v-container v-show="!viewPais" class="col-xl-9">
-    <CountryFilter @option="onOptionSelect"> </CountryFilter>
-    <!-- <p v-if="$fetchState.pending">Carregando países...</p>
-    <p v-else-if="$fetchState.error">Erro enquanto</p> -->
+    <CountryFilter :filter="filter" @option="onOptionSelect"> </CountryFilter>
     <v-flex d-flex>
       <v-layout wrap>
         <v-flex md4 sm4 class="pl-6 pr-6 pa-4" v-for="item in paisesPaginated" :key="item.id">
@@ -49,7 +47,7 @@
                         Capital: {{pais.capital}}
                       </v-card-subtitle>
                       <v-card-subtitle>
-                        Região: <span class="linkClickable" @click="[selectOne = 1, option = 1, regionId = pais.region, onBackChild(false), goFilter()]"> {{pais.region}} </span>
+                        Região: <span class="linkClickable" @click="[filter.selectOne = 1, filter.option = 1, filter.regionId = pais.region, onBackChild(false), goFilter()]"> {{pais.region}} </span>
                       </v-card-subtitle>
                       <v-card-subtitle>
                         Sub-região: {{pais.subregion}}
@@ -121,6 +119,7 @@
     name: 'Home',
     components: {
       ToolbarSystem,
+      CountryFilter
     },
     props: {
       msg: String
@@ -135,37 +134,15 @@
       pageVizinho: 1,
       perPage: 12,
       perPageVizinho: 3,
-      optionsOne: [
-        {
-          id: 1,
-          nome: 'Região'
-        },
-        {
-          id: 2,
-          nome: 'Capital'
-        },
-        {
-          id: 3,
-          nome: 'Língua'
-        },
-        {
-          id: 4,
-          nome: 'País'
-        },
-        {
-          id: 5,
-          nome: 'Código de ligação'
-        }
-      ],
-      selectOne: null,
-      regionId: null,
-      capitais: [],
-      capitalId: null,
-      linguaId: null,
-      paisesSelect: [],
-      paisId: null,
-      option: null,
-      loadingPesquisar: false,
+      filter: {
+        selectOne: null,
+        regionId: null,
+        capitalId: null,
+        linguaId: null,
+        paisId: null,
+        option: null,
+        loadingPesquisar: false,
+      },
       pais: {
         name: null,
         population: null,
@@ -180,11 +157,11 @@
     }),
     methods: {
       onOptionSelect (value) {
-        this.option = value.option
-        this.regionId = value.regionId
-        this.capitalId = value.capitalId
-        this.linguaId = value.linguaId
-        this.paisId = value.paisId
+        this.filter.option = value.option
+        this.filter.regionId = value.regionId
+        this.filter.capitalId = value.capitalId
+        this.filter.linguaId = value.linguaId
+        this.filter.paisId = value.paisId
         this.goFilter()
       },
       onBackChild (value) {
@@ -202,9 +179,9 @@
       },
       goFilter(){
         try {
-          if(this.option != null){
-            this.loadingPesquisar = true
-            switch (this.option){
+          if(this.filter.option != null){
+            this.filter.loadingPesquisar = true
+            switch (this.filter.option){
               case 1:     this.getPaisesByRegiao();      break;
               case 2:     this.getPaisesByCapital();      break;
               case 3:     this.getPaisesByLanguage();      break;
@@ -227,14 +204,14 @@
       },
       visiblePages(){
         this.paisesPaginated = this.paises.slice((this.page - 1)* this.perPage, this.page* this.perPage)
-        this.loadingPesquisar = false
+        this.filter.loadingPesquisar = false
       },
       visiblePagesVizinhos(){
         this.paisesVizinhosPaginated = this.paisesVizinhos.slice((this.pageVizinho - 1)* this.perPageVizinho, this.pageVizinho* this.perPageVizinho)
       },
       async getPaisesByRegiao(){
         try {
-          const paises = await this.$axios.$get(`region/${this.regionId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
+          const paises = await this.$axios.$get(`region/${this.filter.regionId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
           this.paises = paises
           this.visiblePages()
         } catch (error) {
@@ -243,7 +220,7 @@
       },
       async getPaisesByCapital(){
         try {
-          const paises = await this.$axios.$get(`capital/${this.capitalId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
+          const paises = await this.$axios.$get(`capital/${this.filter.capitalId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
           this.paises = paises
           this.visiblePages()
         } catch (error) {
@@ -252,7 +229,7 @@
       },
       async getPaisesByLanguage(){
         try {
-          const paises = await this.$axios.$get(`lang/${this.linguaId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
+          const paises = await this.$axios.$get(`lang/${this.filter.linguaId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
           this.paises = paises
           this.visiblePages()
         } catch (error) {
@@ -262,7 +239,7 @@
       async getPaisesById(){
         try {
           this.paises = []
-          const paises = await this.$axios.$get(`alpha/${this.paisId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
+          const paises = await this.$axios.$get(`alpha/${this.filter.paisId}?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders`)
           this.paises.push(paises)
           this.visiblePages()
         } catch (error) {

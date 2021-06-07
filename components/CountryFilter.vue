@@ -9,70 +9,70 @@
                         color="purple"
                         item-color="purple"
                         item-value="id"
-                        v-model="selectOne"
-                        @change="option = null"
+                        v-model="filter.selectOne"
+                        @change="filter.option = null"
                 >
                 </v-select>
             </v-flex>
             <v-flex md4 sm6 xs12 class="pl-6 pr-6">
                 <v-select
-                        v-if="selectOne == 1"
+                        v-if="filter.selectOne == 1"
                         label="Escolha uma região"
                         :items="filteredRegioes"
                         item-text="region"
                         color="purple"
                         item-color="purple"
                         item-value="id"
-                        v-model="regionId"
-                        @input="option = 1"
+                        v-model="filter.regionId"
+                        @input="filter.option = 1"
                 >
                 </v-select>
                 <v-autocomplete
-                        v-if="selectOne == 2"
+                        v-if="filter.selectOne == 2"
                         label="Escolha uma capital"
                         :items="capitais"
                         item-text="capital"
                         color="purple"
                         item-color="purple"
                         item-value="id"
-                        v-model="capitalId"
-                        @input="option = 2"
+                        v-model="filter.capitalId"
+                        @input="filter.option = 2"
                 >
                 </v-autocomplete>
                 <v-autocomplete
-                        v-if="selectOne == 3"
+                        v-if="filter.selectOne == 3"
                         label="Escolha uma língua"
                         :items="linguas"
                         item-text="lingua"
                         color="purple"
                         item-color="purple"
                         item-value="id"
-                        v-model="linguaId"
-                        @input="option = 3"
+                        v-model="filter.linguaId"
+                        @input="filter.option = 3"
                 >
                 </v-autocomplete>
                 <v-autocomplete
-                        v-if="selectOne == 4"
+                        v-if="filter.selectOne == 4"
                         label="Escolha um país"
                         :items="paisesSelect"
                         item-text="pais"
                         color="purple"
                         item-color="purple"
                         item-value="id"
-                        v-model="paisId"
-                        @input="option = 4"
+                        v-model="filter.paisId"
+                        @input="filter.option = 4"
                 >
                 </v-autocomplete>
                 <v-select
-                        v-if="selectOne == 5"
+                        v-if="filter.selectOne == 5"
                         label="Escolha uma região"
                         :items="filteredRegioes"
                         item-text="region"
                         color="purple"
                         item-color="purple"
                         item-value="id"
-                        v-model="regionId"
-                        @input="option = 5"
+                        v-model="filter.regionId"
+                        @input="filter.option = 5"
                 >
                 </v-select>
             </v-flex>
@@ -80,12 +80,12 @@
                 <v-btn elevation="2"
                         color="purple"
                         @click="setFilter()"
-                        :loading="loadingPesquisar"
+                        :loading="filter.loadingPesquisar"
                         class="white--text"
                         id="input-select"
                 >
                     <span class="white--text pr-4 pl-4">
-                    Pesquisar
+                        Pesquisar
                     </span>
                 </v-btn>
             </v-flex>
@@ -95,6 +95,17 @@
 <script>
 export default {
     name: 'CountryFilter',
+    props: {
+        filter: {
+            selectOne: Number,
+            regionId: Number,
+            capitalId: Number,
+            linguaId: Number,
+            paisId: Number,
+            option: Number,
+            loadingPesquisar: Boolean
+        }
+    },
     data: () => ({
         optionsOne: [
         {
@@ -118,18 +129,11 @@ export default {
             nome: 'Código de ligação'
         }
         ],
-        selectOne: null,
         regioes: [],
-        regionId: null,
         capitais: [],
-        capitalId: null,
         linguas: [],
-        linguaId: null,
         paisesSelect: [],
-        paisId: null,
-        option: null,
         paises: [],
-        loadingPesquisar: false,
     }),
     computed: {
         filteredRegioes(){
@@ -139,11 +143,11 @@ export default {
     methods: {
         setFilter(){
             this.$emit('option', {
-                option: this.option,
-                regionId: this.regionId,
-                capitalId: this.capitalId,
-                linguaId: this.linguaId,
-                paisId: this.paisId
+                option: this.filter.option,
+                regionId: this.filter.regionId,
+                capitalId: this.filter.capitalId,
+                linguaId: this.filter.linguaId,
+                paisId: this.filter.paisId
             })
         },
         getRegioes(){

@@ -3,6 +3,7 @@ import index from '@/pages/index.vue'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import $axios from './helpers/api.mock'
+import CountryFilter from '@/components/CountryFilter'
 // .jsonOverwritesPath
 
 Vue.use(Vuetify)
@@ -38,9 +39,9 @@ describe('index.vue', () => {
 
   it('verifica se o botão pesquisar só funciona se o usuário preencher os selects', async () => {
     const paises = wrapper.vm.paises.length;
-    wrapper.vm.selectOne = 1
-    wrapper.vm.option = null
-    wrapper.vm.regionId = 'Asia'
+    wrapper.vm.filter.selectOne = 1
+    wrapper.vm.filter.option = null
+    wrapper.vm.filter.regionId = 'Asia'
     const btnPesquisar = wrapper.findAll('#input-select')
     await btnPesquisar.at(0).trigger('click')
     expect(wrapper.vm.paises).toHaveLength(paises)
@@ -48,9 +49,9 @@ describe('index.vue', () => {
 
   it('verifica selecionar regiao', async () => {
     const paises = wrapper.vm.paises.length;
-    wrapper.vm.selectOne = 1
-    wrapper.vm.option = 1
-    wrapper.vm.regionId = 'Asia'
+    wrapper.vm.filter.selectOne = 1
+    wrapper.vm.filter.option = 1
+    wrapper.vm.filter.regionId = 'Asia'
     const btnPesquisar = wrapper.findAll('#input-select')
     await btnPesquisar.at(0).trigger('click')
     expect(wrapper.vm.paises).toBeInstanceOf(Array)
