@@ -1,6 +1,5 @@
 <template>
-  <v-app-bar
-      app>
+  <v-app-bar app>
     <v-app-bar-nav-icon disabled>
       <v-layout row class="ml-12">
         <v-img
