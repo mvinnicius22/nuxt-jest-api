@@ -172,7 +172,6 @@
           const paises = await this.$axios.$get('/all?fields=name;flag;region;capital;languages;alpha2Code;population;subregion;borders')
           this.paises = paises
           this.paisesPaginated = paises.slice((this.page - 1)* this.perPage, this.page* this.perPage)
-          this.$emit('paisesFilter', this.paises)
         } catch (error) {
           throw new Error(error)
         }
@@ -192,11 +191,11 @@
             }
             this.resetVariaveis()
           }else{
-            var inputSelect = document.getElementById("input-select");
+            // var inputSelect = document.getElementById("input-select");
             // inputSelect.classList.add("bounce");
-            setTimeout(function() {
+            // setTimeout(function() {
               // inputSelect.classList.remove("bounce");
-            }, 1000);
+            // }, 1000);
           }
         } catch (error) {
           throw new Error(error)
@@ -303,40 +302,6 @@
   outline: 0;
   animation-name: bounce;
   animation-duration: .5s;
-}
-@keyframes bounce {
-  0% {
-    transform: translateX(0px);
-    timing-function: ease-in;
-  }
-  37% {
-    transform: translateX(5px);
-    timing-function: ease-out;
-  }
-  55% {
-    transform: translateX(-5px);
-    timing-function: ease-in;
-  }
-  73% {
-    transform: translateX(4px);
-    timing-function: ease-out;
-  }
-  82% {
-    transform: translateX(-4px);
-    timing-function: ease-in;
-  }
-  91% {
-    transform: translateX(2px);
-    timing-function: ease-out;
-  }
-  96% {
-    transform: translateX(-2px);
-    timing-function: ease-in;
-  }
-  100% {
-    transform: translateX(0px);
-    timing-function: ease-in;
-  }
 }
 .pesquisarRight{
   text-align: right;

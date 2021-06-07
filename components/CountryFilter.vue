@@ -212,8 +212,6 @@ export default {
             try {
                 const paises = await this.$axios.$get('/all?fields=name;flag;region;capital;languages;alpha2Code;currencies;population;subregion;borders')
                 this.paises = paises
-                // this.paisesPaginated = paises.slice((this.page - 1)* this.perPage, this.page* this.perPage)
-                // this.$emit('paisesFilter', this.paises)
                 this.getRegioes()
                 this.getCapitais()
                 this.getLinguas()
