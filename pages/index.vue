@@ -258,7 +258,7 @@
           this.pais = pais
           this.pais.population = numeral(this.pais.population).format('0.0a');
           for(var i = 0; i < this.pais.borders.length; i++){
-            const paisesVizinhos = await this.$axios.$get(`alpha/${this.pais.borders[i]}?fields=alpha2Code;flag`)
+            const paisesVizinhos = await this.$axios.$get(`/alpha/${this.pais.borders[i]}?fields=alpha2Code;flag`)
             this.paisesVizinhos.push({
               alpha2Code: paisesVizinhos.alpha2Code,
               flag: paisesVizinhos.flag

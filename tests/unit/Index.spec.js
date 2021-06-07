@@ -104,9 +104,8 @@ describe('index.vue', () => {
   })
 
   it('verifica se o container individual do país está visível quando viewPais = true', async () => {
-    wrapper.vm.viewPais = false;
     const container = wrapper.find('#containerVerPais')
-    expect(container.isVisible()).toBe(false)
+    expect(container.isVisible()).toBe(true)
   })
 
   it('verifica se os dados do país são preenchidos corretamente', async () => {
