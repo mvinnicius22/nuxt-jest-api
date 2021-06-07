@@ -32,16 +32,7 @@
         "UTC-02:00"
     ],
     "borders": [
-        "ARG",
-        "BOL",
-        "COL",
-        "GUF",
-        "GUY",
-        "PRY",
-        "PER",
-        "SUR",
-        "URY",
-        "VEN"
+        "ARG"
     ],
     "nativeName": "Brasil",
     "numericCode": "076",
