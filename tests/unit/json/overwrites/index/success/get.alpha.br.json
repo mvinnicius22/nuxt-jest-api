@@ -32,7 +32,10 @@
         "UTC-02:00"
     ],
     "borders": [
-        "ARG"
+        "ARG",
+        "COL",
+        "BOL",
+        "PER"
     ],
     "nativeName": "Brasil",
     "numericCode": "076",

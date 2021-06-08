@@ -58,6 +58,16 @@ describe('index.vue', () => {
     expect(wrapper.vm.paises).toBeInstanceOf(Array)
   })
 
+  it('verifica selecionar regiao repetido', async () => {
+    wrapper.vm.filter.selectOne = 1
+    wrapper.vm.filter.option = 5
+    wrapper.vm.filter.regionId = 'Americas'
+    const btnPesquisar = wrapper.findAll('#input-select')
+    await btnPesquisar.at(0).trigger('click')
+    await wrapper.vm.$nextTick()
+    expect(wrapper.vm.paises).toBeInstanceOf(Array)
+  })
+
   it('verifica selecionar capital', async () => {
     wrapper.vm.filter.selectOne = 1
     wrapper.vm.filter.option = 2
@@ -112,8 +122,13 @@ describe('index.vue', () => {
     wrapper.vm.viewPais = true;
     expect(wrapper.vm.pais).toBeInstanceOf(Object)
     expect(wrapper.vm.pais.capital).toBeDefined()
-    wrapper.vm.pageVizinho = 2
-    expect(wrapper.vm.pageVizinho).toEqual(2)
+  })
+
+  it('mudar paginação do pais vizinho', () => {
+    jest.spyOn(wrapper.vm, 'visiblePagesVizinhos');
+    wrapper.vm.viewPais = true;
+    wrapper.find('#paginationVizinho').vm.$emit('input', 2);
+    expect(wrapper.vm.visiblePagesVizinhos).toBeCalledTimes(1);
   })
 
   it('verifica se o botão voltar tá funcionando', async () => {

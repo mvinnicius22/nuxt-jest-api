@@ -36,8 +36,6 @@ describe('index.vue', () => {
     wrapper.vm.filter.regionId = 'Americas'
     const btnPesquisar = wrapper.findAll('#input-select')
     await btnPesquisar.at(0).trigger('click')
-    await wrapper.vm.$nextTick()
-    expect(wrapper.vm.paises).toBeInstanceOf(Array)
   })
 
   it('verifica selecionar capital', async () => {
@@ -46,8 +44,6 @@ describe('index.vue', () => {
     wrapper.vm.filter.capitalId = 'brasilia'
     const btnPesquisar = wrapper.findAll('#input-select')
     await btnPesquisar.at(0).trigger('click')
-    await wrapper.vm.$nextTick()
-    expect(wrapper.vm.paises).toBeInstanceOf(Array)
   })
 
   it('verifica selecionar lingua', async () => {
@@ -56,8 +52,6 @@ describe('index.vue', () => {
     wrapper.vm.filter.linguaId = 'pt'
     const btnPesquisar = wrapper.findAll('#input-select')
     await btnPesquisar.at(0).trigger('click')
-    await wrapper.vm.$nextTick()
-    expect(wrapper.vm.paises).toBeInstanceOf(Array)
   })
 
   it('verifica selecionar pais', async () => {
@@ -66,8 +60,6 @@ describe('index.vue', () => {
     wrapper.vm.filter.paisId = 'BR'
     const btnPesquisar = wrapper.findAll('#input-select')
     await btnPesquisar.at(0).trigger('click')
-    await wrapper.vm.$nextTick()
-    expect(wrapper.vm.paises).toBeInstanceOf(Array)
   })
 
 })

@@ -105,6 +105,7 @@
               @input="visiblePagesVizinhos($event)"
               class="pt-4"
               color="purple"
+              id="paginationVizinho"
         >
         </v-pagination>
       </v-layout>
@@ -177,28 +178,22 @@
         }
       },
       goFilter(){
-        try {
-          if(this.filter.option != null){
-            this.filter.loadingPesquisar = true
-            switch (this.filter.option){
-              case 1:     this.getPaisesByRegiao();      break;
-              case 2:     this.getPaisesByCapital();      break;
-              case 3:     this.getPaisesByLanguage();      break;
-              case 4:     this.getPaisesById();       break;
-              case 5:     this.getPaisesByRegiao();      break;
-              default:
-                break
-            }
-            this.resetVariaveis()
-          }else{
-            // var inputSelect = document.getElementById("input-select");
-            // inputSelect.classList.add("bounce");
-            // setTimeout(function() {
-              // inputSelect.classList.remove("bounce");
-            // }, 1000);
+        if(this.filter.option != null){
+          this.filter.loadingPesquisar = true
+          switch (this.filter.option){
+            case 1:     this.getPaisesByRegiao();      break;
+            case 2:     this.getPaisesByCapital();      break;
+            case 3:     this.getPaisesByLanguage();      break;
+            case 4:     this.getPaisesById();       break;
+            case 5:     this.getPaisesByRegiao();      break;
           }
-        } catch (error) {
-          throw new Error(error)
+          this.resetVariaveis()
+        }else{
+          // var inputSelect = document.getElementById("input-select");
+          // inputSelect.classList.add("bounce");
+          // setTimeout(function() {
+            // inputSelect.classList.remove("bounce");
+          // }, 1000);
         }
       },
       visiblePages(){
@@ -267,7 +262,7 @@
           this.paisesVizinhosPaginated = this.paisesVizinhos
           this.viewPais = true
         } catch (error) {
-          throw new Error(error)
+          // throw new Error(error)
         }
       },
     },
