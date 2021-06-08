@@ -151,62 +151,46 @@ export default {
             })
         },
         getRegioes(){
-            try {
-                this.regioes = this.paises.map((pais) => {
-                if(pais){
-                    return {
-                        id: pais.region,
-                        region: pais.region
-                    }
+            this.regioes = this.paises.map((pais) => {
+            if(pais){
+                return {
+                    id: pais.region,
+                    region: pais.region
                 }
-                })
-            } catch (error) {
-                throw new Error(error)
             }
+            })
         },
         getCapitais(){
-            try {
-            this.capitais = this.paises.map((pais) => {
-                if(pais){
-                return {
-                    id: pais.capital,
-                    capital: pais.capital
-                }
-                }
-            })
-            } catch (error) {
-            throw new Error(error)
+        this.capitais = this.paises.map((pais) => {
+            if(pais){
+            return {
+                id: pais.capital,
+                capital: pais.capital
             }
+            }
+        })
         },
         getLinguas(){
-            try {
-                this.linguas = this.paises.map((pais) => {
-                    for(var i = 0; i < pais.languages.length; i++){
-                    if(pais){
-                        return {
-                            id: pais.languages[i].iso639_1,
-                            lingua: pais.languages[i].nativeName
-                        }
-                    }
-                    }
-                })
-            } catch (error) {
-                throw new Error(error)
-            }
-        },
-        getPaisesForSelect(){
-            try {
-            this.paisesSelect = this.paises.map((pais) => {
+            this.linguas = this.paises.map((pais) => {
+                for(var i = 0; i < pais.languages.length; i++){
                 if(pais){
-                return {
-                    id: pais.alpha2Code,
-                    pais: pais.name
+                    return {
+                        id: pais.languages[i].iso639_1,
+                        lingua: pais.languages[i].nativeName
+                    }
                 }
                 }
             })
-            } catch (error) {
-            throw new Error(error)
+        },
+        getPaisesForSelect(){
+        this.paisesSelect = this.paises.map((pais) => {
+            if(pais){
+            return {
+                id: pais.alpha2Code,
+                pais: pais.name
             }
+            }
+        })
         },
         async getPaises(){
             try {
