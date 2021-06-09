@@ -15,9 +15,12 @@ $ npm run start
 
 # generate static project
 $ npm run generate
-```
+
 # for tests
 $ npm t 
 $ npx jest
+
+```
+
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
